@@ -1,0 +1,11 @@
+{
+  "buildCommand": "cd FixMyRoad-main/web && npm install && npm run build",
+  "outputDirectory": "FixMyRoad-main/web/dist",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
