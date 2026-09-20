@@ -20,6 +20,7 @@ export const CommandCenterInspectModal: React.FC<CommandCenterInspectModalProps>
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [currentComplaint, setCurrentComplaint] = useState<any>(complaint);
   const [actionLoading, setActionLoading] = useState(false);
@@ -203,7 +204,7 @@ export const CommandCenterInspectModal: React.FC<CommandCenterInspectModalProps>
         )}
 
         {/* Scrollable Content */}
-        <div className="p-5 sm:p-6 overflow-y-auto space-y-6 text-gray-800">
+        <div ref={scrollContainerRef} className="p-5 sm:p-6 overflow-y-auto space-y-6 text-gray-800">
           {/* Escalation & Breach Status Alert */}
           <div className="bg-red-50 border-2 border-red-300 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-start space-x-3">
@@ -459,11 +460,20 @@ export const CommandCenterInspectModal: React.FC<CommandCenterInspectModalProps>
             <button
               type="button"
               onClick={() => {
-                setShowCauseOpen(!showCauseOpen);
+                const nextState = !showCauseOpen;
+                setShowCauseOpen(nextState);
                 setReassignOpen(false);
                 setResolveOpen(false);
+                if (nextState) {
+                  setTimeout(() => {
+                    scrollContainerRef.current?.scrollTo({
+                      top: scrollContainerRef.current.scrollHeight,
+                      behavior: 'smooth'
+                    });
+                  }, 50);
+                }
               }}
-              className="py-2.5 px-3.5 rounded-xl font-bold text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 flex items-center space-x-1.5 transition-all shadow-xs"
+              className="py-2.5 px-3.5 rounded-xl font-bold text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 flex items-center space-x-1.5 transition-all shadow-xs cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Issue Show-Cause</span>
@@ -472,11 +482,20 @@ export const CommandCenterInspectModal: React.FC<CommandCenterInspectModalProps>
             <button
               type="button"
               onClick={() => {
-                setReassignOpen(!reassignOpen);
+                const nextState = !reassignOpen;
+                setReassignOpen(nextState);
                 setShowCauseOpen(false);
                 setResolveOpen(false);
+                if (nextState) {
+                  setTimeout(() => {
+                    scrollContainerRef.current?.scrollTo({
+                      top: scrollContainerRef.current.scrollHeight,
+                      behavior: 'smooth'
+                    });
+                  }, 50);
+                }
               }}
-              className="py-2.5 px-3.5 rounded-xl font-bold text-xs bg-blue-100 hover:bg-blue-200 text-blue-900 border border-blue-300 flex items-center space-x-1.5 transition-all shadow-xs"
+              className="py-2.5 px-3.5 rounded-xl font-bold text-xs bg-blue-100 hover:bg-blue-200 text-blue-900 border border-blue-300 flex items-center space-x-1.5 transition-all shadow-xs cursor-pointer"
             >
               <ArrowRightLeft className="w-3.5 h-3.5" />
               <span>Reassign Authority</span>
@@ -485,11 +504,20 @@ export const CommandCenterInspectModal: React.FC<CommandCenterInspectModalProps>
             <button
               type="button"
               onClick={() => {
-                setResolveOpen(!resolveOpen);
+                const nextState = !resolveOpen;
+                setResolveOpen(nextState);
                 setShowCauseOpen(false);
                 setReassignOpen(false);
+                if (nextState) {
+                  setTimeout(() => {
+                    scrollContainerRef.current?.scrollTo({
+                      top: scrollContainerRef.current.scrollHeight,
+                      behavior: 'smooth'
+                    });
+                  }, 50);
+                }
               }}
-              className="py-2.5 px-4 rounded-xl font-bold text-xs bg-govgreen hover:bg-govgreen-dark text-white flex items-center space-x-1.5 transition-all shadow-md"
+              className="py-2.5 px-4 rounded-xl font-bold text-xs bg-govgreen hover:bg-govgreen-dark text-white flex items-center space-x-1.5 transition-all shadow-md cursor-pointer"
             >
               <CheckCircle className="w-3.5 h-3.5" />
               <span>Executive Sign-Off</span>

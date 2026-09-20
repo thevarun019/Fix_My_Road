@@ -53,6 +53,7 @@ services:
       - REDIS_URL=redis://redis:6379
       - AI_SERVICE_URL=http://ai-service:8001
       - JWT_SECRET=roadwatch_national_production_secret_2026
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
 
   frontend-web:
     build:

@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { Shield, Sparkles, KeyRound } from 'lucide-react';
 import { apiRequest } from '../../lib/api';
 import { AiVerificationBanner, AiAnalysisResult } from '../../components/AiVerificationBanner';
-import { AiKeyModal } from '../../components/AiKeyModal';
 import { extractExifGps } from '../../lib/exif';
 
 interface Step1PhotoProps {
@@ -20,7 +19,6 @@ export const Step1Photo: React.FC<Step1PhotoProps> = ({ onNext, onAutonomousSubm
   const [aiLoading, setAiLoading] = useState(false);
   const [autonomousLoading, setAutonomousLoading] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState<AiAnalysisResult | null>(draft.aiAnalysis || null);
-  const [showKeyModal, setShowKeyModal] = useState(false);
 
   // Trigger AI Inspection & Geo-Location Analysis whenever photo changes
   const runAiAnalysis = async (photoDataUrl: string, initialLat?: number, initialLng?: number) => {
@@ -230,10 +228,10 @@ export const Step1Photo: React.FC<Step1PhotoProps> = ({ onNext, onAutonomousSubm
           <p className="text-xs sm:text-sm text-gray-600 mt-1 font-medium">{t('step1_sub')}</p>
         </div>
 
-        {/* AI Analysis Active Indicator */}
-        <div className="inline-flex items-center space-x-1.5 self-start sm:self-auto bg-emerald-50 border border-emerald-300 px-3 py-1.5 rounded-full text-xs font-bold text-emerald-900 shadow-sm">
-          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-          <span>AI Road Hazard Detection Active</span>
+        {/* Gemini AI Engine Status Pill */}
+        <div className="inline-flex items-center space-x-1.5 self-start sm:self-auto bg-amber-50 border border-saffron/40 px-3 py-1.5 rounded-full text-xs font-bold text-amber-900 shadow-xs">
+          <Sparkles className="w-3.5 h-3.5 text-saffron-dark" />
+          <span>Gemini 1.5 Flash Vision</span>
         </div>
       </div>
 
@@ -291,7 +289,6 @@ export const Step1Photo: React.FC<Step1PhotoProps> = ({ onNext, onAutonomousSubm
         </button>
       </div>
 
-      <AiKeyModal isOpen={showKeyModal} onClose={() => setShowKeyModal(false)} />
     </div>
   );
 };

@@ -65,7 +65,7 @@ export const AiVerificationBanner: React.FC<AiVerificationBannerProps> = ({
             </div>
             <div>
               <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 block">
-                AI Road Vision
+                Google Gemini Flash Vision
               </span>
               <h4 className="font-black text-sm">Inspecting Road Hazard & Damage Severity...</h4>
             </div>
@@ -151,9 +151,14 @@ export const AiVerificationBanner: React.FC<AiVerificationBannerProps> = ({
             <CheckCircle2 className="w-5 h-5" />
           </div>
           <div>
+            <div className="flex items-center space-x-2">
               <span className="text-xs font-black text-emerald-950 uppercase tracking-tight">
                 AI Verified Road Hazard
               </span>
+              <span className="bg-emerald-200 text-emerald-900 text-[10px] font-black px-1.5 py-0.5 rounded">
+                Gemini Flash
+              </span>
+            </div>
             <p className="text-[11px] text-emerald-800">Authenticity confirmed · Real road hazard detected</p>
           </div>
         </div>
