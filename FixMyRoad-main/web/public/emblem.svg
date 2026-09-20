@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <circle cx="50" cy="50" r="48" fill="#FFFFFF" stroke="#000080" stroke-width="3"/>
+  <circle cx="50" cy="50" r="22" fill="none" stroke="#000080" stroke-width="2.5"/>
+  <circle cx="50" cy="50" r="4" fill="#000080"/>
+  <!-- 24 Ashoka Spokes -->
+  <g stroke="#000080" stroke-width="1.5">
+    <line x1="50" y1="28" x2="50" y2="72"/>
+    <line x1="28" y1="50" x2="72" y2="50"/>
+    <line x1="34.4" y1="34.4" x2="65.6" y2="65.6"/>
+    <line x1="34.4" y1="65.6" x2="65.6" y2="34.4"/>
+    <line x1="42.5" y1="29.5" x2="57.5" y2="70.5"/>
+    <line x1="29.5" y1="42.5" x2="70.5" y2="57.5"/>
+    <line x1="42.5" y1="70.5" x2="57.5" y2="29.5"/>
+    <line x1="29.5" y1="57.5" x2="70.5" y2="42.5"/>
+    <line x1="38.5" y1="31.5" x2="61.5" y2="68.5"/>
+    <line x1="31.5" y1="38.5" x2="68.5" y2="61.5"/>
+    <line x1="38.5" y1="68.5" x2="61.5" y2="31.5"/>
+    <line x1="31.5" y1="61.5" x2="68.5" y2="38.5"/>
+  </g>
+  <!-- Tricolor Top & Bottom Arcs -->
+  <path d="M 15 50 A 35 35 0 0 1 85 50" fill="none" stroke="#FF9933" stroke-width="5" stroke-dasharray="6 3"/>
+  <path d="M 15 50 A 35 35 0 0 0 85 50" fill="none" stroke="#138808" stroke-width="5" stroke-dasharray="6 3"/>
+  <text x="50" y="88" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="7" fill="#000080">सत्यमेव जयते</text>
+</svg>

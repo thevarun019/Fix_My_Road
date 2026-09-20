@@ -1,0 +1,134 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+model User {
+  id        String      @id @default(uuid())
+  phone     String      @unique
+  name      String?
+  role      String      @default("CITIZEN") // CITIZEN, OFFICER, ADMIN, SUPER_ADMIN
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  complaints Complaint[]
+}
+
+model Authority {
+  id                    String        @id @default(uuid())
+  code                  String        @unique // e.g. MCD, NDMC, PWD-DELHI, NHAI-RO-DEL
+  name                  String
+  nameHi                String
+  type                  String        @default("MUNICIPAL_CORP") // MUNICIPAL_CORP, PWD, NHAI, CANTONMENT
+  nodalOfficerName      String?
+  nodalEmail            String?
+  nodalPhone            String?
+  escalationOfficerName String?
+  escalationPhone       String?
+  complaints            Complaint[]
+  createdAt             DateTime      @default(now())
+}
+
+model Jurisdiction {
+  id         String      @id @default(uuid())
+  code       String      @unique
+  name       String
+  nameHi     String?
+  state      String
+  district   String
+  city       String?
+  minLat     Float
+  maxLat     Float
+  minLng     Float
+  maxLng     Float
+  complaints Complaint[]
+}
+
+model SlaRule {
+  id              String   @id @default(uuid())
+  roadCategory    String   // NATIONAL_HIGHWAY, STATE_HIGHWAY, ARTERIAL, RESIDENTIAL
+  severity        String   // CRITICAL, HIGH, MEDIUM, LOW
+  resolutionHours Int      // e.g. 24, 48, 72, 168
+  warningHours    Int      // e.g. 6 hours before deadline
+  createdAt       DateTime @default(now())
+}
+
+model Complaint {
+  id                  String          @id @default(uuid())
+  complaintCode       String          @unique // e.g. IN-MCD-2026-0042
+  userId              String?
+  user                User?           @relation(fields: [userId], references: [id])
+  authorityId         String?
+  authority           Authority?      @relation(fields: [authorityId], references: [id])
+  jurisdictionId      String?
+  jurisdiction        Jurisdiction?   @relation(fields: [jurisdictionId], references: [id])
+  
+  latitude            Float
+  longitude           Float
+  address             String
+  pincode             String?
+  
+  category            String          @default("POTHOLE") // POTHOLE, CRACK, BROKEN_SURFACE, WATERLOGGING, CAVE_IN
+  severity            String          @default("MEDIUM")  // CRITICAL, HIGH, MEDIUM, LOW
+  roadCategory        String          @default("ARTERIAL") // NATIONAL_HIGHWAY, STATE_HIGHWAY, ARTERIAL, RESIDENTIAL
+  description         String?
+  
+  photoUrl            String
+  blurredPhotoUrl     String?
+  inProgressPhotoUrl  String?
+  resolutionPhotoUrl  String?
+  resolutionRemarks   String?
+  
+  status              String          @default("SUBMITTED") // SUBMITTED, ASSIGNED, IN_PROGRESS, RESOLVED, VERIFIED, REJECTED
+  priorityScore       Int             @default(50)
+  
+  slaHours            Int             @default(48)
+  slaDeadline         DateTime
+  slaBreached         Boolean         @default(false)
+  slaPaused           Boolean         @default(false)
+  slaPausedAt         DateTime?
+  slaRemainingSeconds Int?
+  
+  escalationLevel     Int             @default(0) // 0: JE, 1: AEE, 2: SE, 3: CE
+  assignedOfficerName String?
+  assignedOfficerPhone String?
+  
+  citizenVerified     Boolean?
+  citizenRating       Int?
+  citizenFeedback     String?
+  
+  dedupClusterId      String?
+  
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  resolvedAt          DateTime?
+  
+  escalations         EscalationLog[]
+  auditLogs           AuditLog[]
+}
+
+model EscalationLog {
+  id               String    @id @default(uuid())
+  complaintId      String
+  complaint        Complaint @relation(fields: [complaintId], references: [id])
+  fromLevel        Int
+  toLevel          Int
+  reason           String
+  escalatedToTitle String
+  escalatedAt      DateTime  @default(now())
+}
+
+model AuditLog {
+  id          String    @id @default(uuid())
+  complaintId String
+  complaint   Complaint @relation(fields: [complaintId], references: [id])
+  action      String    // CREATED, STATUS_UPDATED, ESCALATED, RESOLVED, VERIFIED
+  actorType   String    // CITIZEN, OFFICER, SYSTEM, ADMIN
+  actorId     String?
+  details     String?   // JSON string
+  timestamp   DateTime  @default(now())
+}

@@ -1,0 +1,16 @@
+{
+  "name": "FixMyRoad — सड़क प्रहरी",
+  "short_name": "FixMyRoad",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FF9933",
+  "description": "Government of India Road Complaint & SLA Escalation Portal",
+  "icons": [
+    {
+      "src": "/emblem.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

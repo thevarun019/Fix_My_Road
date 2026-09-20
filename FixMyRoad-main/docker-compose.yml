@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: roadwatch-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: roadwatch_user
+      POSTGRES_PASSWORD: roadwatch_secure_pass_2026
+      POSTGRES_DB: roadwatch_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: roadwatch-redis
+    restart: always
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+
+  ai-service:
+    build:
+      context: ./ai
+      dockerfile: Dockerfile
+    container_name: roadwatch-ai
+    restart: always
+    ports:
+      - "8001:8001"
+    environment:
+      - PORT=8001
+
+  backend-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: roadwatch-api
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - ai-service
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://roadwatch_user:roadwatch_secure_pass_2026@postgres:5432/roadwatch_db
+      - REDIS_URL=redis://redis:6379
+      - AI_SERVICE_URL=http://ai-service:8001
+      - JWT_SECRET=roadwatch_national_production_secret_2026
+
+  frontend-web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: roadwatch-web
+    restart: always
+    depends_on:
+      - backend-api
+    ports:
+      - "3000:80"
+
+volumes:
+  postgres_data:
+  redis_data:
