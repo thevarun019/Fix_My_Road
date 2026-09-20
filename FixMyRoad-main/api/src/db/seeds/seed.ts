@@ -120,7 +120,42 @@ async function seed() {
     }
   });
 
-  // 3. Sample Demo Complaints
+  // 3. SLA Rules
+  console.log('[Seed] Seeding SLA rules...');
+  const slaRules = [
+    { roadCategory: 'NATIONAL_HIGHWAY', severity: 'CRITICAL', resolutionHours: 6, warningHours: 1 },
+    { roadCategory: 'NATIONAL_HIGHWAY', severity: 'HIGH', resolutionHours: 12, warningHours: 2 },
+    { roadCategory: 'NATIONAL_HIGHWAY', severity: 'MEDIUM', resolutionHours: 24, warningHours: 4 },
+    { roadCategory: 'NATIONAL_HIGHWAY', severity: 'LOW', resolutionHours: 48, warningHours: 8 },
+
+    { roadCategory: 'STATE_HIGHWAY', severity: 'CRITICAL', resolutionHours: 12, warningHours: 2 },
+    { roadCategory: 'STATE_HIGHWAY', severity: 'HIGH', resolutionHours: 24, warningHours: 4 },
+    { roadCategory: 'STATE_HIGHWAY', severity: 'MEDIUM', resolutionHours: 48, warningHours: 8 },
+    { roadCategory: 'STATE_HIGHWAY', severity: 'LOW', resolutionHours: 72, warningHours: 12 },
+
+    { roadCategory: 'ARTERIAL', severity: 'CRITICAL', resolutionHours: 24, warningHours: 4 },
+    { roadCategory: 'ARTERIAL', severity: 'HIGH', resolutionHours: 48, warningHours: 8 },
+    { roadCategory: 'ARTERIAL', severity: 'MEDIUM', resolutionHours: 72, warningHours: 12 },
+    { roadCategory: 'ARTERIAL', severity: 'LOW', resolutionHours: 120, warningHours: 24 },
+
+    { roadCategory: 'RESIDENTIAL', severity: 'CRITICAL', resolutionHours: 48, warningHours: 8 },
+    { roadCategory: 'RESIDENTIAL', severity: 'HIGH', resolutionHours: 72, warningHours: 12 },
+    { roadCategory: 'RESIDENTIAL', severity: 'MEDIUM', resolutionHours: 120, warningHours: 24 },
+    { roadCategory: 'RESIDENTIAL', severity: 'LOW', resolutionHours: 168, warningHours: 36 }
+  ];
+
+  for (const rule of slaRules) {
+    await prisma.slaRule.upsert({
+      where: { id: `${rule.roadCategory}-${rule.severity}` },
+      update: rule,
+      create: {
+        id: `${rule.roadCategory}-${rule.severity}`,
+        ...rule
+      }
+    });
+  }
+
+  // 4. Sample Demo Complaints
   const samplePhoto = 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&auto=format&fit=crop&q=60';
   const samplePothole2 = 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&auto=format&fit=crop&q=60';
   const sampleFixed = 'https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?w=600&auto=format&fit=crop&q=60';
