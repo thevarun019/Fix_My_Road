@@ -5,11 +5,11 @@ export function startSlaWorkers() {
   console.log('[SLA Engine] Initializing background SLA watchers & sweeper...');
 
   // In-process event bus triggers
-  localEventBus.on('sla-warning', async ({ complaintId }) => {
+  localEventBus.on('sla-warning', async ({ complaintId }: { complaintId: string }) => {
     console.log(`[SLA Warning Event] Complaint ${complaintId} is nearing SLA deadline.`);
   });
 
-  localEventBus.on('sla-breached', async ({ complaintId }) => {
+  localEventBus.on('sla-breached', async ({ complaintId }: { complaintId: string }) => {
     console.log(`[SLA Breached Event] Complaint ${complaintId} has exceeded SLA timeframe.`);
     await EscalationService.escalateComplaint(complaintId, 'SLA timer fired breach event');
   });
