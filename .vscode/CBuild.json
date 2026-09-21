@@ -1,0 +1,27 @@
+{
+  "CBuild.debuggerPath": "D:/gcc9.4_glibc2.31/bin/gdb.exe",
+  "CBuild.cStandard": "",
+  "CBuild.cppStandard": "",
+  "CBuild.warnings": [
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic"
+  ],
+  "CBuild.enableWarnings": true,
+  "CBuild.warningsAsError": false,
+  "CBuild.compilerArgs": [],
+  "CBuild.linkerArgs": [],
+  "CBuild.includePaths": [],
+  "CBuild.includeSearch": [
+    "*",
+    "**/*"
+  ],
+  "CBuild.excludeSearch": [
+    "**/build",
+    "**/build/**",
+    "**/.*",
+    "**/.*/**",
+    "**/.vscode",
+    "**/.vscode/**"
+  ]
+}
