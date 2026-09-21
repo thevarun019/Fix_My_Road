@@ -18,8 +18,32 @@ export const app = express();
 // Security & Parsing Middlewares
 app.use(helmet());
 app.use(cors({
-  origin: ENV.NODE_ENV === 'production' ? 'https://fixmyroad.com' : 'http://localhost:3000',
-  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  origin: (origin, callback) => {
+    // Allow non-browser requests (Postman, curl, server-to-server)
+    if (!origin) return callback(null, true);
+
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'https://fixmyroad.com'
+    ];
+    if (ENV.FRONTEND_URL) {
+      allowedOrigins.push(ENV.FRONTEND_URL.replace(/\/$/, ''));
+    }
+
+    const isAllowed =
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
+      ENV.NODE_ENV !== 'production';
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked for origin: ${origin}`));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json({ limit: '15mb' }));

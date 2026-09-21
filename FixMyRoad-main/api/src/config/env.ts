@@ -9,5 +9,6 @@ export const ENV = {
   MSG91_SENDER_ID: process.env.MSG91_SENDER_ID || 'RODWCH',
   AI_SERVICE_URL: process.env.AI_SERVICE_URL || 'http://localhost:8001',
   REDIS_URL: process.env.REDIS_URL || 'redis://localhost:6379',
-  GEMINI_API_KEY: process.env.GEMINI_API_KEY || ''
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY || '',
+  FRONTEND_URL: process.env.FRONTEND_URL || ''
 };
